@@ -1,0 +1,15 @@
+extend layout
+block body
+    h2 Tasks for project #{project.title}
+
+    #list
+        ul#tasks-list
+            if(tasks.length)
+                each task in tasks
+                    li
+                        span= task.title
+                        a.delete(href="/task/#{task.id}") x
+
+        form#add(action="/project/#{project.id}/tasks", method="POST")
+            input(type="text", name="title")
+            button(type="submit") Add

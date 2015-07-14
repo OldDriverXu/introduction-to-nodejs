@@ -1,0 +1,1049 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <title>Introduction to NodeJS</title>
+  <style type="text/css">
+    body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #222;
+  background-color: #f7f7f7;
+  font-size: 100%;
+}
+
+.slide {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 0; right: 0;
+}
+
+.slide-content {
+  width: 1280px;
+  /*height: 1080px;*/
+  overflow: hidden;
+  margin: 10px auto 0 auto;
+  padding: 30px;
+
+  font-weight: 200;
+  font-size: 200%;
+  line-height: 1.375;
+}
+
+.controls {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+}
+
+.arrow {
+  width: 0; height: 0;
+  border: 30px solid #333;
+  float: left;
+  margin-right: 30px;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.prev {
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+
+  border-left-width: 0;
+  border-right-width: 50px;
+}
+
+.next {
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-right-color: transparent;
+
+  border-left-width: 50px;
+  border-right-width: 0;
+}
+
+.prev:hover {
+  border-right-color: #888;
+  cursor: pointer;
+}
+
+.next:hover {
+  border-left-color: #888;
+  cursor: pointer;
+}
+
+h1 {
+  font-size: 300%;
+  line-height: 1.2;
+  text-align: center;
+  margin: 170px 0 0;
+}
+
+h2 {
+  font-size: 100%;
+  line-height: 1.2;
+  margin: 5px 0;
+  text-align: center;
+  font-weight: 200;
+}
+
+h3 {
+  font-size: 140%;
+  line-height: 1.2;
+  border-bottom: 1px solid #aaa;
+  margin: 0;
+  padding-bottom: 15px;
+}
+
+img {
+  display: block;
+  margin: 0 auto;
+}
+
+ul {
+  padding: 20px 0 0 60px;
+  font-weight: 200;
+  line-height: 1.375;
+}
+
+.author h1 {
+  font-size: 170%;
+  font-weight: 200;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.author h3 {
+  font-weight: 100;
+  text-align: center;
+  font-size: 95%;
+  border: none;
+}
+
+a {
+  text-decoration: none;
+  color: #44a4dd;
+}
+
+a:hover {
+  color: #66b5ff;
+}
+
+pre {
+  font-size: 60%;
+  line-height: 1.3;
+}
+
+.progress {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+
+.progress-bar {
+  width: 0%;
+  height: 3px;
+  background-color: #b4b4b4;
+
+  -webkit-transition: width 0.05s ease-out;
+  -moz-transition: width 0.05s ease-out;
+  -o-transition: width 0.05s ease-out;
+  transition: width 0.05s ease-out;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 850px) {
+
+  body {
+    font-size: 70%;
+  }
+
+  .slide-content {
+    width: auto;
+  }
+
+  img {
+    width: 100%;
+  }
+
+  h1 {
+    margin-top: 120px;
+  }
+
+  .prev, .prev:hover {
+    border-right-color: rgba(135, 135, 135, 0.5);
+  }
+
+  .next, .next:hover {
+    border-left-color: rgba(135, 135, 135, 0.5);
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 50%;
+    overflow: hidden;
+  }
+
+  .slide-content {
+    padding: 10px;
+    margin-top: 10px;
+    height: 340px;
+  }
+
+  h1 {
+    margin-top: 50px;
+  }
+
+  ul {
+    padding-left: 25px;
+  }
+}
+
+@media print {
+  * {
+    -webkit-print-color-adjust: exact;
+  }
+
+  @page {
+    size: letter;
+  }
+
+  .hidden {
+    display: inline;
+  }
+
+  html {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  body {
+    margin: 0 auto !important;
+    border: 0;
+    padding: 0;
+    float: none !important;
+    overflow: visible;
+    background: none !important;
+    font-size: 52%;
+  }
+
+  .progress, .controls {
+    display: none;
+  }
+
+  .slide {
+    position: static;
+  }
+
+  .slide-content {
+    border: 1px solid #222;
+    margin-top: 0;
+    margin-bottom: 40px;
+    height: 3.5in;
+    overflow: visible;
+  }
+
+  .slide:nth-child(even) {
+    /* 2 slides per page */
+    page-break-before: always;
+  }
+}
+
+/*
+github.com style (c) Vasily Polovnyov <vast@whiteants.net>
+*/
+
+code, pre {
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  overflow: auto;
+  padding: 6px 10px;
+}
+
+code {
+  padding: 0 5px;
+}
+
+pre>code {
+  margin: 0; padding: 0;
+  border: none;
+  background: transparent;
+}
+
+pre .comment,
+pre .template_comment,
+pre .diff .header,
+pre .javadoc {
+  color: #998;
+  font-style: italic
+}
+
+pre .keyword,
+pre .css .rule .keyword,
+pre .winutils,
+pre .javascript .title,
+pre .nginx .title,
+pre .subst,
+pre .request,
+pre .status {
+  color: #333;
+  font-weight: bold
+}
+
+pre .number,
+pre .hexcolor,
+pre .ruby .constant {
+  color: #099;
+}
+
+pre .string,
+pre .tag .value,
+pre .phpdoc,
+pre .tex .formula {
+  color: #d14
+}
+
+pre .title,
+pre .id {
+  color: #900;
+  font-weight: bold
+}
+
+pre .javascript .title,
+pre .lisp .title,
+pre .clojure .title,
+pre .subst {
+  font-weight: normal
+}
+
+pre .class .title,
+pre .haskell .type,
+pre .vhdl .literal,
+pre .tex .command {
+  color: #458;
+  font-weight: bold
+}
+
+pre .tag,
+pre .tag .title,
+pre .rules .property,
+pre .django .tag .keyword {
+  color: #000080;
+  font-weight: normal
+}
+
+pre .attribute,
+pre .variable,
+pre .lisp .body {
+  color: #008080
+}
+
+pre .regexp {
+  color: #009926
+}
+
+pre .class {
+  color: #458;
+  font-weight: bold
+}
+
+pre .symbol,
+pre .ruby .symbol .string,
+pre .lisp .keyword,
+pre .tex .special,
+pre .prompt {
+  color: #990073
+}
+
+pre .built_in,
+pre .lisp .title,
+pre .clojure .built_in {
+  color: #0086b3
+}
+
+pre .preprocessor,
+pre .pi,
+pre .doctype,
+pre .shebang,
+pre .cdata {
+  color: #999;
+  font-weight: bold
+}
+
+pre .deletion {
+  background: #fdd
+}
+
+pre .addition {
+  background: #dfd
+}
+
+pre .diff .change {
+  background: #0086b3
+}
+
+pre .chunk {
+  color: #aaa
+}
+
+body {
+  background-color: #222;
+  color: #eee;
+}
+
+h1, h3 {
+  font-family: Impact;
+  font-weight: bold;
+  font-style: italic;
+}
+
+pre code {
+  color: #ccc;
+  font-size: 140%;
+}
+
+.keyword {
+  color: #0086b3 !important;
+  font-weight: inherit !important;
+}
+
+.tag {
+  color: #900 !important;
+}
+
+code {
+  background-color: inherit;
+}
+
+em {
+  border-bottom: 1px solid #666;
+}
+
+  </style>
+</head>
+<body>
+    <div class="progress">
+    <div class="progress-bar"></div>
+  </div>
+
+  <div class="slide " id="slide-1">
+    <section class="slide-content"><h1 id="an-introduction-to-nodejs">An Introduction to NodeJS</h1>
+<h2 id="smashing-node-js-javascript-everywhere">Smashing Node.js, Javascript Everywhere</h2>
+<h2 id="-">前端人，真会玩  :-)</h2>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-2">
+    <section class="slide-content"><h3 id="basic-introduction">Basic Introduction</h3>
+<ul>
+<li>安装</li>
+<li>基本用法</li>
+<li>Node REPL</li>
+<li>NPM</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-3">
+    <section class="slide-content"><h3 id="basic-introduction">Basic Introduction</h3>
+<p>Node是JavaScript语言的服务器运行环境:  </p>
+<ul>
+<li>JavaScript语言通过Node在服务器运行，在这个意义上，Node有点像JavaScript虚拟机</li>
+<li>Node提供大量工具库，使得JavaScript语言与操作系统互动（比如读写文件、新建子进程），在这个意义上，Node又是JavaScript的工具库  </li>
+</ul>
+<p>安装：访问官方网站nodejs.org了解安装细节。</p>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-4">
+    <section class="slide-content"><h3 id="node-repl-read-eval-print-loop-">Node REPL（Read–eval–print loop，&quot;读取-求值-输出&quot;循环）</h3>
+<p>在命令行键入node命令，后面没有文件名，就进入一个Node.js的REPL环境<br><img src="./img/01.png" alt="Node REPL"></p>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-5">
+    <section class="slide-content"><h3 id="npm-node-">NPM - Node包管理器</h3>
+<p>Node comes with npm installed so you should have a version of npm.  </p>
+<pre>
+    $npm -v
+    2.5.1
+</pre>
+
+<p>For more details, please visit <a href="https://docs.npmjs.com/">https://docs.npmjs.com/</a></p>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-6">
+    <section class="slide-content"><h3 id="-">模块化结构</h3>
+<ul>
+<li>NodeJS核心模块</li>
+<li>自定义模块</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-7">
+    <section class="slide-content"><h3 id="-">模块化结构</h3>
+<p>Node.js采用模块化结构，按照CommonJS规范定义和使用模块。模块与文件是一一对应关系，即加载一个模块，实际上就是加载对应的一个模块文件。  </p>
+<pre>
+    var circle = require('./circle.js');
+    // 或者
+    var circle = require('./circle');
+    var bar = require('bar'); //实际上加载的是./node_modules/bar/lib/bar.js文件
+</pre></section>
+  </div>
+  <div class="slide hidden " id="slide-8">
+    <section class="slide-content"><h3 id="nodejs-">NodeJS核心模块</h3>
+<ul>
+<li>HTTP: 提供HTTP服务器功能</li>
+<li>URL: 解析URL</li>
+<li>FS(File System): 文件系统交互</li>
+<li>OS(Operation System): 与系统交互</li>
+<li>Events: &quot;发布/订阅&quot;模式（publish/subscribe）的部署</li>
+<li>Query String: 解析URL的查询字符串</li>
+<li>Child Process: 子进程</li>
+<li>Path: 处理文件路径</li>
+<li>Crypto: 提供加密和解密功能，基本上是对OpenSSL的包装</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-9">
+    <section class="slide-content"><h3 id="-">自定义模块</h3>
+<p>Node模块采用CommonJS规范。只要符合这个规范，就可以自定义模块。    </p>
+<pre>
+    // foo.js
+    module.exports = function(x) {
+        console.log(x);
+    };
+</pre>
+上面代码就是一个模块，它通过module.exports变量，对外输出一个方法。这个模块的使用方法如下。  
+<pre>
+    // index.js
+    var m = require('./foo');
+    m("这是自定义模块");
+</pre></section>
+  </div>
+  <div class="slide hidden " id="slide-10">
+    <section class="slide-content"><h3 id="-io">阻塞与非阻塞IO</h3>
+<ul>
+<li>单线程</li>
+<li>阻塞与非阻塞</li>
+<li>异常处理</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-11">
+    <section class="slide-content"><h3 id="-">单线程</h3>
+<p><img src="./img/02.png" alt="Node REPL"></p>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-12">
+    <section class="slide-content"><h3 id="-">阻塞与非阻塞</h3>
+<p><pre>
+    // PHP
+    print(&#39;Hello&#39;);
+    sleep(5);
+    print(&quot;World&quot;);
+    print(&quot;Bye&quot;);
+</pre>
+PHP中，sleep让程序阻塞一段时间，并且阻塞的时间内，不会有任何操作。</p>
+<p><pre>
+    // Node
+    console.log(&#39;Hello&#39;);
+    setTimeout(function () {
+        console.log(&#39;World&#39;);
+    }, 5000);
+    console.log(&#39;Bye&#39;);
+</pre>
+Node会先注册事件，随后查询这些事件是否已经发生。当事件发生时，对应的回调函数被触发，然后继续执行下去。如果没有事件触发，则继续执行其他代码，直到有新事件触发。</p>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-13">
+    <section class="slide-content"><h3 id="-">异常处理</h3>
+<pre>
+    try {
+        setTimeout(function(){
+            throw new Error("error");
+        },1)
+    } catch (err) {
+    //can not catch it
+        console.log(err);
+    }
+</pre>
+异步方式产生的错误不会被正常捕获(catch),但是会触发<code>uncaughtException</code>事件，可以对这个时间注册回调函数，从而捕获异常。(demo:3-err-handling)  
+<pre>
+    process.on('uncaughtException', function(err) {
+        console.error('Error caught in uncaughtException event:', err);
+    });
+</pre>
+
+<p>由于异步中的异常无法被外部捕获，所以异常应该作为第一个参数传递给回调函数，Node的编码规则就是这么规定的。  </p>
+<pre>
+    fs.readFile('/test.txt', function (err, data) {
+        if (err) throw err;
+        console.log(data);
+    });
+</pre>
+
+<p>还可以使用Domain</p>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-14">
+    <section class="slide-content"><h3 id="fs-">FS模块</h3>
+<p>Note: fs模块是唯一一个同时提供同步和异步API的模块。</p>
+<pre>
+    var fs = require('fs');
+    // 同步模式
+    console.log(fs.readdirSync('.'));
+    // 异步模式
+    fs.readdir('.', function (err, result) {
+        console.log(result);
+    });
+</pre></section>
+  </div>
+  <div class="slide hidden " id="slide-15">
+    <section class="slide-content"><h3 id="stream-">Stream(流)</h3>
+<p>读写数据有两种方式。一种方式是同步处理，即先将数据全部读入内存，然后处理。它的优点是符合直觉，流程非常自然，缺点是如果遇到大文件，要花很长时间，可能要过很久才能进入数据处理的步骤。另一种方式就是Stream方式，它是系统读取外部数据实际上的方式，即每次只读入数据的一小块，像“流水”一样。所以，Stream方式就是每当系统读入了一小块数据，就会触发一个事件，发出“新数据块”的信号，只要监听这个事件，就能掌握进展，做出相应处理，这样就提高了程序的性能。  </p>
+<p>Stream接口最大特点就是通过事件通信，具有readable、writable、drain、data、end、close等事件，既可以读取数据，也可以写入数据。读写数据时，每读入（或写入）一段数据，就会触发一次data事件，全部读取（或写入）完毕，触发end事件。如果发生错误，则触发error事件。</p>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-16">
+    <section class="slide-content"><h3 id="stream-">Stream(流)</h3>
+<p>Node内部很多涉及IO处理的对象，都部署了Stream接口，比如HTTP连接、文件读写、标准输入输出等。以下这些输入输出操作，提供的都是Stream接口。  </p>
+<ul>
+<li>http responses, on the client</li>
+<li>http requests, on the server</li>
+<li>fs read streams</li>
+<li>zlib streams</li>
+<li>crypto streams</li>
+<li>tcp sockets</li>
+<li>child process  </li>
+</ul>
+<p>process全局对象中包含了三种流对象，分别对应Unix三个标准流：  </p>
+<ul>
+<li>stdin: 标准输入</li>
+<li>stdout: 标准输出</li>
+<li>stderr: 标准错误</li>
+</ul>
+<p>数据流通过pipe方法，可以方便地导向其他具有Stream接口的对象。  </p>
+<pre>
+  var fs = require('fs');
+  var zlib = require('zlib');
+
+  fs.createReadStream('wow.txt')    //打开文本文件
+    .pipe(zlib.createGzip())        //压缩
+    .pipe(process.stdout);          //导向标准输出
+</pre>
+
+<p>更多流的操作，可以查看 <a href="http://javascript.ruanyifeng.com/nodejs/stream.html">http://javascript.ruanyifeng.com/nodejs/stream.html</a></p>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-17">
+    <section class="slide-content"><h3 id="file-explorer">File-explorer</h3>
+<p>demo: 5-file-explorer</p>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-18">
+    <section class="slide-content"><h3 id="tcp">TCP</h3>
+<p>温故而知新：<br><img src="./img/03.jpg" alt="Node REPL"><br>TCP(传输控制协议)是一个面向连接的协议，保证了两台计算机之间数据传输的可靠性和顺序。</p>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-19">
+    <section class="slide-content"><h3 id="-telnet-">一个简易的Telnet聊天室</h3>
+<p>demo：6-tpc-chat
+<img src="./img/05.png" alt="Node REPL"><br><img src="./img/06.png" alt="Node REPL"></p>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-20">
+    <section class="slide-content"><h3 id="http">HTTP</h3>
+<ul>
+<li>HTTP结构</li>
+<li>简单的Web服务器</li>
+<li>superagent</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-21">
+    <section class="slide-content"><h3 id="http-">HTTP结构</h3>
+<p>HTTP协议构建在请求和响应的概念上，对应在NodeJS中就是由http.ServerRequest和http.ServerResponse这而两个构造器构造出来的对象上。  </p>
+<ul>
+<li>创建一个HTTP服务器  <pre>
+  var http = require('http');
+  http.createServer(function (req, res) {
+      res.writeHead(200);
+      res.end('Hello World');
+  }).listen(3000);
+</pre></li>
+<li><p>响应内容如下  </p>
+<pre>
+  HTTP/1.1 200 OK
+  Connection: keep-alive
+  Transfer-Encoding: chunked
+
+  Hello World
+</pre></li>
+<li>头信息 在请求和响应消息前使用头信息(header)来描述不同的消息内容。
+Web页面会分发许多不同类型的内容：TEXT, HTML, XML, JSON, PNG, JPEG等。试试修改头信息，效果<pre>
+  http.createServer(function (req, res) {
+      res.writeHead(200, {'Content-Type': 'text/html'});
+      res.end('Hello < b >World< /b >');
+  }).listen(3000);
+</pre></li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-22">
+    <section class="slide-content"><h3 id="-http-">一个简单的HTTP服务器</h3>
+<p>demo：7-http-form</p>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-23">
+    <section class="slide-content"><h3 id="connect">Connect</h3>
+<p>Connect is an extensible HTTP server framework for node using &quot;plugins&quot; known as middleware(中间件).  </p>
+<p>Connect 是Node.js中的一个模块，可以用来创建中间件的一个框架，它自身已经包装了Node的HTTP模块的Server以及Server的req和res的对象。</p>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-24">
+    <section class="slide-content"><h3 id="-connect-">通过Connect实现一个简单的网站</h3>
+<p>网站常见的任务:  </p>
+<ul>
+<li>托管静态文件</li>
+<li>处理错误以及损坏或者不存在的URL</li>
+<li>处理不同类型的请求</li>
+</ul>
+<p>基于HTTP模块API之上的Connect，提供了一些工具和方法能够让这些重复性的处理便于实现，开发者可以更好专注于应用本身。Don&#39;t Repeat Yourself！<br>demo: http vs connect, /8-connect-middleware/http-server.js vs /8-connect-middleware/connect.js</p>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-25">
+    <section class="slide-content"><h3 id="middleware-">Middleware(中间件)</h3>
+<p>Middleware is a function with access to the request object (req), the response object (res), and the next middleware in line in the request-response cycle of an Express application, commonly denoted by a variable named next. Middleware can:  </p>
+<ul>
+<li>Execute any code.</li>
+<li>Make changes to the request and the response objects.</li>
+<li>End the request-response cycle.</li>
+<li>Call the next middleware in the stack.  </li>
+</ul>
+<p>If the current middleware does not end the request-response cycle, it must call next() to pass control to the next middleware, otherwise the request will be left hanging.  </p>
+<p>With an optional mount path, middleware can be loaded at the application level or at the router level. Also, a series of middleware functions can be loaded together, creating a sub-stack of the middleware system at a mount point.  </p>
+<p>demo: write a middleware(请求时间过长提醒)<br>middleware: /8-connect-middleware/request-time.js<br>server: /8-connect-middleware/request-time-server.js</p>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-26">
+    <section class="slide-content"><h3 id="-">中间件组合使用</h3>
+<ul>
+<li>serve-static: 挂载, 将任意URL匹配到文件系统中的任意目录</li>
+<li>morgan: logger, 将请求和响应信息打印在终端</li>
+<li>body-parser: 请求解析, json and urlencoded</li>
+<li>cookie-parser: 读写cookie</li>
+<li>express-session: 管理会话</li>
+</ul>
+<p>demo: 登陆验证 /8-connect-middleware/auth-server.js<br><img src="./img/10.png" alt="demo-connection"></p>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-27">
+    <section class="slide-content"><h3 id="express-4-0-">Express(4.0)</h3>
+<p>基于 Node.js 平台的快速、灵活、简洁的 web 开发框架。  </p>
+<ul>
+<li>Web应用: Express 是一个简洁、灵活的 Node.js Web 应用开发框架, 它提供一系列健壮的特性，帮助你创建各种 Web 和移动设备应用。</li>
+<li>API: 丰富的 HTTP 快捷方法随你信手拈来，让你创建健壮的 API 变得既快速又简单。</li>
+<li>性能: Express 不对 Node 已有的特性进行二次抽象，只是在它之上扩展了 Web 应用所需的基本功能。</li>
+</ul>
+<p>The main changes in Express 4 are:  </p>
+<ul>
+<li>Changes to Express core and middleware system: The dependency on Connect and built-in middleware were removed, so you must add middleware yourself.</li>
+<li>Changes to the routing system.</li>
+<li>Various other changes.</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-28">
+    <section class="slide-content"><h3 id="express-web-">Express Web应用</h3>
+<ul>
+<li>创建</li>
+<li>设置</li>
+<li>模板引擎</li>
+<li>路由</li>
+<li>中间件</li>
+</ul>
+<p>demo: 9-express-youku<br><img src="./img/11.png" alt="express-youku"></p>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-29">
+    <section class="slide-content"><h3 id="websocket-socket-io">WebSocket &amp; Socket.IO</h3>
+<ul>
+<li>HTML5 WebSocket</li>
+<li>Socket.IO</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-30">
+    <section class="slide-content"><h3 id="html5-websocket">HTML5 WebSocket</h3>
+<p>谈到Web实时推送，就不得不说WebSocket。在WebSocket出现之前，很多网站为了实现实时推送技术，通常采用的方案是轮询 (Polling)和Comet技术，Comet又可细分为两种实现方式，一种是长轮询机制，一种称为流技术，这两种方式实际上是对轮询技术的改进，这些 方案带来很明显的缺点，需要由浏览器对服务器发出HTTP request，大量消耗服务器带宽和资源。面对这种状况，HTML5定义了WebSocket协议，能更好的节省服务器资源和带宽并实现真正意义上的实 时推送。  </p>
+<p>WebSocket协议本质上是一个基于TCP的协议，它由通信协议和编程API组成，WebSocket能够在浏览器和服务器之间建立双向连接， 以基于事件的方式，赋予浏览器实时通信能力。既然是双向通信，就意味着服务器端和客户端可以同时发送并响应请求，而不再像HTTP的请求和响应。</p>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-31">
+    <section class="slide-content"><h3 id="websocket-echo-server">WebSocket Echo Server</h3>
+<p>Client Code:  </p>
+<pre>
+  var ws = new WebSocket('ws://host/path')
+  ws.onopen = function () {
+    ws.send('data');
+  }
+  ws.onclose = function () {}
+  ws.ondata = function (ev) {
+    console.log(ev.data);
+  }
+</pre>
+
+<p>Server Code:  </p>
+<pre>
+  ws.on('connection', function (socket) {
+    socket.on('message', function (msg) {
+        console.log(msg);
+        socket.send('data');
+    });
+});
+</pre>
+
+<p>Demo: 10-web-socket  </p>
+<p>Can I Use Websocket:<br><img src="./img/07.png" alt="Can I Use Websocket"></p>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-32">
+    <section class="slide-content"><h3 id="socket-io">Socket.IO</h3>
+<p>Socket.IO是一个开源的WebSocket库，它通过Node.js实现WebSocket服务端，同时也提供客户端JS库。Socket.IO支持以事件为基础的实时双向通讯，它可以工作在任何平台、浏览器或移动设备。  </p>
+<p>Socket.IO支持4种协议：WebSocket、htmlfile、xhr-polling、jsonp-polling，它会自动根据浏览器选择适合的通讯方式，从而让开发者可以聚焦到功能的实现而不是平台的兼容性(Socket.IO 可以在绝大部分的浏览器和设备上运行，从IE6到iOS都支持)，同时Socket.IO具有不错的稳定性和性能。  </p>
+<ul>
+<li>超时重连</li>
+<li>支持JOSN数据收发</li>
+<li>利用命名空间来将消息进行区分</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-33">
+    <section class="slide-content"><h3 id="socket-io-chat-room">Socket.IO Chat Room</h3>
+<p>Demo: 11-socket-io
+<img src="./img/14.png" alt="socket-io"></p>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-34">
+    <section class="slide-content"><h3 id="mongodb">MongoDB</h3>
+<ul>
+<li>MongoDB</li>
+<li>Mongoose</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-35">
+    <section class="slide-content"><h3 id="nosql">NoSQL</h3>
+<p>NoSQL(Not Only SQL), 非关系型数据库</p>
+<ul>
+<li>可以处理超大量的数据</li>
+<li>可以运行在便宜的PC服务器集群上</li>
+<li>高可扩展性和高可用性</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-36">
+    <section class="slide-content"><h3 id="mongodb">MongoDB</h3>
+<p>MongoDB是一个面向文档，schema无关(schema-less)的数据库，非常适合于Nodejs应用。</p>
+<p><img src="./img/08.png" alt="MongoDB VS MySQL"><br><img src="./img/09.png" alt="MongoDB数据结构">  </p>
+<ul>
+<li>文档(document),相当于关系数据库中的一行记录</li>
+<li>多个文档组成一个集合(collection),相当于关系数据的表</li>
+<li>多个集合(collection)，逻辑上组织在一起，就是数据库(database)</li>
+<li>一个MongoDB实例支持多个数据库(database)</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-37">
+    <section class="slide-content"><h3 id="mongodb-demo">MongoDB  Demo</h3>
+<p>demo (mongodb): 12-mongodb-auth<br><img src="./img/15.png" alt="mongodb"><br>demo (usage of mongoose): 12-mongodb-mongoose<br><img src="./img/16.png" alt="usage of mongoose"></p>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-38">
+    <section class="slide-content"><h3 id="mysql">MySQL</h3>
+<p>MySQL是一个关系型数据库管理系统，由瑞典 MySQL AB 公司开发，目前属于 Oracle 旗下公司。由于MySQL是开放源码软件，因此可以大大降低总体拥有成本。  </p>
+<p>Linux作为操作系统，Apache和 Nginx作为 Web 服务器，MySQL 作为数据库，PHP/Perl/Python作为服务器端脚本解释器。由于这四个软件都是免费或开放源码软件（FLOSS)，因此使用这种方式不用花一分钱（除开人工成本）就可以建立起一个稳定、免费的网站系统，被业界称为“LAMP“或“LNMP”组合。  </p>
+<p>通过node-mysql, 可以使用nodejs来写SQL查询语句来操作mysql。  </p>
+<p>同时可以使用Sequelize来操作MySQL，使得数据关系、数据处理变得更加容易。</p>
+</section>
+  </div>
+  <div class="slide hidden " id="slide-39">
+    <section class="slide-content"><h3 id="mysql-demo">MySQL Demo</h3>
+<p>demo (mysql): 13-mysql-shopping-cart<br><img src="./img/19.png" alt="mysql"><br>demo (usage of sequelize): 13-mysql-todo-list<br><img src="./img/22.png" alt="usage of sequelize"></p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-40">
+    <section class="slide-content"><div class="author">
+  <h1 class="name">Yang XU</h1>
+    <h3 class="url">
+      <a href="http://weibo.com/u/1749225714">http://weibo.com/u/1749225714</a>
+    </h3>
+</div>
+</section>
+  </div>
+
+  <div class="controls">
+    <div class="arrow prev"></div>
+    <div class="arrow next"></div>
+  </div>
+
+
+  <script type="text/javascript">
+    /**
+ * Returns the current page number of the presentation.
+ */
+function currentPosition() {
+  return parseInt(document.querySelector('.slide:not(.hidden)').id.slice(6));
+}
+
+
+/**
+ * Navigates forward n pages
+ * If n is negative, we will navigate in reverse
+ */
+function navigate(n) {
+  var position = currentPosition();
+  var numSlides = document.getElementsByClassName('slide').length;
+
+  /* Positions are 1-indexed, so we need to add and subtract 1 */
+  var nextPosition = (position - 1 + n) % numSlides + 1;
+
+  /* Normalize nextPosition in-case of a negative modulo result */
+  nextPosition = (nextPosition - 1 + numSlides) % numSlides + 1;
+
+  document.getElementById('slide-' + position).classList.add('hidden');
+  document.getElementById('slide-' + nextPosition).classList.remove('hidden');
+
+  updateProgress();
+  updateURL();
+  updateTabIndex();
+}
+
+
+/**
+ * Updates the current URL to include a hashtag of the current page number.
+ */
+function updateURL() {
+  window.history.replaceState({} , null, '#' + currentPosition());
+}
+
+
+/**
+ * Sets the progress indicator.
+ */
+function updateProgress() {
+  var progressBar = document.querySelector('.progress-bar');
+
+  if (progressBar !== null) {
+    var numSlides = document.getElementsByClassName('slide').length;
+    var position = currentPosition() - 1;
+    var percent = (numSlides === 1) ? 100 : 100 * position / (numSlides - 1);
+    progressBar.style.width = percent.toString() + '%';
+  }
+}
+
+
+/**
+ * Removes tabindex property from all links on the current slide, sets
+ * tabindex = -1 for all links on other slides. Prevents slides from appearing
+ * out of control.
+ */
+function updateTabIndex() {
+  var allLinks = document.querySelectorAll('.slide a');
+  var position = currentPosition();
+  var currentPageLinks = document.getElementById('slide-' + position).querySelectorAll('a');
+  var i;
+
+  for (i = 0; i < allLinks.length; i++) {
+    allLinks[i].setAttribute('tabindex', -1);
+  }
+
+  for (i = 0; i < currentPageLinks.length; i++) {
+    currentPageLinks[i].removeAttribute('tabindex');
+  }
+}
+
+/**
+ * Determines whether or not we are currently in full screen mode
+ */
+function isFullScreen() {
+  return document.fullscreenElement ||
+         document.mozFullScreenElement ||
+         document.webkitFullscreenElement ||
+         document.msFullscreenElement;
+}
+
+/**
+ * Toggle fullScreen mode on document element.
+ * Works on chrome (>= 15), firefox (>= 9), ie (>= 11), opera(>= 12.1), safari (>= 5).
+ */
+function toggleFullScreen() {
+  /* Convenient renames */
+  var docElem = document.documentElement;
+  var doc = document;
+
+  docElem.requestFullscreen =
+      docElem.requestFullscreen ||
+      docElem.msRequestFullscreen ||
+      docElem.mozRequestFullScreen ||
+      docElem.webkitRequestFullscreen.bind(docElem, Element.ALLOW_KEYBOARD_INPUT);
+
+  doc.exitFullscreen =
+      doc.exitFullscreen ||
+      doc.msExitFullscreen ||
+      doc.mozCancelFullScreen ||
+      doc.webkitExitFullscreen;
+
+  isFullScreen() ? doc.exitFullscreen() : docElem.requestFullscreen();
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Update the tabindex to prevent weird slide transitioning
+  updateTabIndex();
+
+  // If the location hash specifies a page number, go to it.
+  var page = window.location.hash.slice(1);
+  if (page) {
+    navigate(parseInt(page) - 1);
+  }
+
+  document.onkeydown = function (e) {
+    var kc = e.keyCode;
+
+    // left, down, H, J, backspace, PgUp - BACK
+    // up, right, K, L, space, PgDn - FORWARD
+    // enter - FULLSCREEN
+    if (kc === 37 || kc === 40 || kc === 8 || kc === 72 || kc === 74 || kc === 33) {
+      navigate(-1);
+    } else if (kc === 38 || kc === 39 || kc === 32 || kc === 75 || kc === 76 || kc === 34) {
+      navigate(1);
+    } else if (kc === 13) {
+      toggleFullScreen();
+    }
+  };
+
+  if (document.querySelector('.next') && document.querySelector('.prev')) {
+    document.querySelector('.next').onclick = function (e) {
+      e.preventDefault();
+      navigate(1);
+    };
+
+    document.querySelector('.prev').onclick = function (e) {
+      e.preventDefault();
+      navigate(-1);
+    };
+  }
+});
+
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<% include header.ejs %>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span8">
+                <form>
+                    <fieldset>
+                        <legend><%= label %></legend>
+                        <div id="msg"></div>
+                        <textarea id="c_editor" name="c_editor" class="span12" rows="10" <%= (movie?'movie='+movie+'':'') %>></textarea>
+                        <button id="c_save" type="button" class="btn btn-primary">保存</button>
+                    </fieldset>
+                </form>
+                <button type="button" class="btn"><a href="/movie">返回</a></button>
+            </div>
+        </div>
+    </div>
+<% include footer.ejs %>

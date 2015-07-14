@@ -1,0 +1,9 @@
+{
+  "name": "ws-cursors",
+  "description": "multi user using ws demo",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "^4.13.0",
+    "websocket.io": "^0.2.1"
+  }
+}

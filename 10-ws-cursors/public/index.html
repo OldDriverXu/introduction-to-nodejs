@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket cursors</title>
+    <style>
+        html, body{width: 100%; height: 100%;}
+    </style>
+    <script>
+        window.onload = function () {
+            // create socket
+            var ws = new WebSocket('ws://localhost:3000');
+            ws.onopen = function () {
+                document.body.onmouseover = function (ev) {
+                    ws.send(JSON.stringify({x: ev.clientX, y: ev.clientY}));
+                }
+            }
+
+            var intialized;
+            ws.onmessage = function (ev) {
+                var obj = JSON.parse(ev.data);
+                // the first message is the position of all existing cursors
+                if (!intialized) {
+                    intialized = true;
+                    for (var id in obj) {
+                        move(id, obj[id]);
+                    }
+                } else {
+                    // other message can either be a postion change or a disconnection
+                    if ('disconnect' == obj.type) {
+                        remove(obj.id);
+                    } else {
+                        move(obj.id, obj.pos);
+                    }
+                }
+            }
+
+            function move (id, pos) {
+                var cursor = document.getElementById('cursor-' + id);
+                if (!cursor) {
+                    cursor = document.createElement('img');
+                    cursor.id = 'cursor-' + id;
+                    cursor.src = '/cursor.png';
+                    cursor.style.position = 'absolute';
+                    document.body.appendChild(cursor);
+                }
+                cursor.style.left = pos.x + 'px';
+                cursor.style.top = pos.y + 'px';
+            }
+
+            function remove (id) {
+                var cursor = document.getElementById('cursor-' + id);
+                cursor.parentNode.removeChild(cursor);
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1>WebSocket Cursors</h1>
+</body>
+</html>

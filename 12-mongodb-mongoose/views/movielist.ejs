@@ -1,0 +1,37 @@
+<% include header.ejs %>
+    <div class="container-fluid">
+        <div class="movielist">
+            <% if (movies.length) { %>
+                <ul>
+                    <% for (var i=0, imax=movies.length; i<imax; i++) { %>
+                        <li>
+                            <div class="title"><%= movies[i].name %></div>
+                            <div class="date"><%= movies[i].publish %></div>
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>#</th>
+                                    <th>source</th>
+                                    <th>link</th>
+                                    <th>quality</th>
+                                    <th>lang</th>
+                                </th>
+                                <% for (var j=0, jmax=movies[i].source.length; j<jmax; j++) { %>
+                                    <tr>
+                                        <td><%= j+1 %></td>
+                                        <td class="source"><%= movies[i].source[j].source %></td>
+                                        <td class="link"><%= movies[i].source[j].link %></td>
+                                        <td class="quality"><%= movies[i].source[j].quality %></td>
+                                        <td class="lang"><%= movies[i].source[j].lang %></td>
+                                    </tr>
+                                <% } %>
+                            </table>
+                            <a href="/movie/<%= movies[i].name %>" ><button type="button" class="btn btn-info">编辑</button></a>
+                        </li>
+                    <% } %>
+                </ul>
+            <% } %>
+        </div>
+        <a href="/movie/add"><button type="button" class="btn btn-info">新增一个电影</button></a>
+        <a href="/home"><button type="button" class="btn" href="/home">返回</button></a>
+    </div>
+<% include footer.ejs %>

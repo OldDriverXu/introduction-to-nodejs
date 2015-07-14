@@ -1,0 +1,10 @@
+{
+  "name": "express-youku",
+  "description": "An express demo using youku api",
+  "version": "0.0.1",
+  "dependencies": {
+    "ejs": "^2.3.1",
+    "express": "^4.13.0",
+    "superagent": "^1.2.0"
+  }
+}

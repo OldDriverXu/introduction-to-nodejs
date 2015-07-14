@@ -1,0 +1,73 @@
+/* Fix user-agent */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+}
+
+html, input {
+  font-family:
+    "Microsoft Yahei",
+    Helvetica,
+    Arial,
+    "Lucida Grande",
+    sans-serif;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 15px;
+  list-style: none;
+  word-wrap: break-word;
+}
+
+#chat {display: none;}
+.join {color: green;}
+.left {color: red;}
+.me{color: #333;}
+.other{color: #333;}
+.username {
+  display: inline-block;
+  font-weight: 700;
+  overflow: hidden;
+  padding-right: 15px;
+  vertical-align: middle;
+}
+.text{
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 3px;
+  vertical-align: middle;
+}
+.me .text{background-color: #ddd;}
+.me .arrow{width: 0; height: 0; display: inline-block; vertical-align: middle; border-width: 5px 5px 5px 0px; border-right-color: #ddd; border-style: solid; color: #fff;}
+.other .text{background-color: #609700}
+.other .arrow{width: 0; height: 0; display: inline-block; vertical-align: middle; border-width: 5px 5px 5px 0px; border-right-color: #609700; border-style: solid; color: #fff;}
+#form{
+    width: 100%;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+#input{
+  border: 5px solid #666;
+  height: 60px;
+  left: 0;
+  outline: none;
+  padding-left: 10px;
+  width: 78%;
+  font-size: 200%;
+  letter-spacing: 3px;
+  vertical-align: top;
+}
+button{border: 5px solid #666; width: 20%; height: 60px; margin: 0}
